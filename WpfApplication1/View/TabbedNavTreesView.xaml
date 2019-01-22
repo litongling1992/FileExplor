@@ -1,0 +1,59 @@
+﻿<UserControl
+  x:Class="WpfApplication1.View.TabbedNavTreesView"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  mc:Ignorable="d"
+  xmlns:mdl="clr-namespace:WpfApplication1.Model"
+  xmlns:vm="clr-namespace:WpfApplication1.ViewModel"
+  xmlns:vw="clr-namespace:WpfApplication1.View"
+  d:DesignHeight="300"
+  d:DesignWidth="300" 
+  x:Name="CurrentTabbedNavTreesName">
+  
+  <UserControl.Resources>
+
+    <DataTemplate x:Key="templateNavTreeHeader" DataType="{x:Type vm:NavTreeVm}">
+        <!-- show Image here is also possible, to do?? add icons foor rootItems    -->
+        <TextBlock Margin="3,2,3,2" FontSize="10" Text="{Binding TreeName}"/>
+    </DataTemplate>
+      
+    <!-- 
+      Mimic tabcontrol with listboxes
+      - We want in NavTree tabpositions with fixed row position when selection changes, we use Tabcontrol or Listbox with uniformgrid
+      - UniformGrid n*n, introduces extra row so we use MaxRowsNavTrees from VM, see comment there
+    -->
+    <Style x:Key="mimicTabControlHeader" TargetType="ListBox">
+      <Setter Property="ItemsPanel">
+        <Setter.Value>
+          <ItemsPanelTemplate>
+            <UniformGrid Rows="{Binding MaxRowsNavTrees}"/>
+          </ItemsPanelTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+  </UserControl.Resources>
+
+  
+  <!-- Ok, here comes Tab lookalike with fixed Tab positions --> 
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" SharedSizeGroup="Headers"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+
+    <ListBox
+      x:Name="NavTabHeaderLookAlike"
+      Grid.Row="0"
+      ItemsSource="{Binding NavTrees}"
+      SelectedItem="{Binding SelectedNavTree}"
+      Style="{StaticResource mimicTabControlHeader}"
+      ItemContainerStyle="{StaticResource selectedItemUseBrusch}"
+      ItemTemplate="{StaticResource templateNavTreeHeader}"
+      />
+         
+    <vw:NavTreeView Grid.Row="1" DataContext="{Binding SelectedNavTree}" />
+
+  </Grid>
+</UserControl>

@@ -1,0 +1,96 @@
+﻿<Window x:Class="WpfApplication1.View.EditWindow1"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApplication1.View"
+        mc:Ignorable="d"
+        Title="编辑模型" Height="672.468" Width="578.91" WindowStartupLocation="CenterScreen"
+        
+         ResizeMode="NoResize"
+        >
+    <Grid Background="#FFDEDDE4" Margin="0,0,2,-2">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="274*"/>
+            <ColumnDefinition Width="333*"/>
+        </Grid.ColumnDefinitions>
+        <!--<DockPanel Grid.ColumnSpan="2" VerticalAlignment="Top" Height="38">
+            <Button
+      x:Name="BtnClose"
+      Style="{StaticResource RoundButton}"
+      ToolTip="关闭"
+      ToolTipService.ShowOnDisabled="True"
+      Content="r"
+      FontFamily="Webdings"
+      FontWeight="Bold"
+      Background="Blue"
+     RenderTransformOrigin="-0.238,1.19" Height="Auto" Width="34" Cursor="Hand"  Grid.Column="1" Click="BtnClose_Click" HorizontalAlignment="Right" Margin="1,1,1,0"/>
+        </DockPanel>-->
+        <Label x:Name="label" Content="模型源路径" HorizontalAlignment="Left" Height="31" Margin="28,44,0,0" VerticalAlignment="Top" Width="72"/>
+        <TextBox x:Name="TxtSourcePath" Height="32" Margin="100,43,34,0" TextWrapping="Wrap"  VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+        <Label x:Name="label_Copy" Content="模型类型" HorizontalAlignment="Left" Height="31" Margin="26,91,0,0" VerticalAlignment="Top" Width="72"/>
+        <RadioButton x:Name="RbFurniture" Content="家具" Height="24" Margin="112,109,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="60" Click="RbFurniture_Click" Checked="RbFurniture_Checked" Unchecked="RbFurniture_Unchecked" />
+        <Label x:Name="label_Copy1" Content="模型名称" HorizontalAlignment="Left" Height="31" Margin="22,161,0,0" VerticalAlignment="Top" Width="72"/>
+        <Label x:Name="label_Copy2" Content="中文" HorizontalAlignment="Left" Height="31" Margin="78,142,0,0" VerticalAlignment="Top" Width="50"/>
+        <Label x:Name="label_Copy3" Content="英文" HorizontalAlignment="Left" Margin="78,178,0,0" Width="50" Height="31" VerticalAlignment="Top"/>
+        <TextBox x:Name="TxtModelChineseName" Height="31" Margin="112,142,95,0" TextWrapping="Wrap"  VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+        <TextBox x:Name="TxtModelEnglishName" Margin="112,178,95,0" TextWrapping="Wrap" Height="31" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+        <RadioButton x:Name="RbMaterial" Content="材质" Margin="112,80,0,0" Height="24" VerticalAlignment="Top" HorizontalAlignment="Left" Width="72" Checked="RbMaterial_Checked"/>
+
+        <Grid x:Name="GdProperty" Margin="10,228,10,35" Grid.ColumnSpan="2">
+            <Border BorderBrush="DarkGray" BorderThickness="1" Margin="0,0,0,10">
+                <GroupBox x:Name="GbDisFromFloor" Header="家具默认离地高度" Height="68" VerticalAlignment="Top" HorizontalAlignment="Left" Width="250" Margin="259,273,0,0">
+                    <Grid Margin="0,0,18,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="8*"/>
+                            <ColumnDefinition Width="9*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox x:Name="TxtDefaultFromFloor" Height="31" Margin="0,10,71,0" TextWrapping="Wrap"  VerticalAlignment="Top" Grid.ColumnSpan="2" TextChanged="TxtDefaultFromFloor_TextChanged" KeyDown="TxtDefaultFromFloor_KeyDown"/>
+                        <Label x:Name="label_Copy4" Content="(单位：mm)" HorizontalAlignment="Left" Height="31" Margin="45,10,-22,0" VerticalAlignment="Top" Width="93" Grid.Column="1"/>
+
+                    </Grid>
+
+                </GroupBox>
+
+
+            </Border>
+            <Label x:Name="labelProperty" Content="家具模型属性设置" HorizontalAlignment="Left" Margin="10,0,0,373.963" VerticalAlignment="Bottom"/>
+
+            <GroupBox x:Name="GbTransProperty" Header="家具透明属性" Margin="69,0,0,46" Height="66" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="160">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="71*"/>
+                        <ColumnDefinition Width="77*"/>
+                    </Grid.ColumnDefinitions>
+                    <RadioButton x:Name="RbTransparent" Content="透明" Margin="10,6,8,0" VerticalAlignment="Top"/>
+                    <RadioButton Grid.Column="0" x:Name="RbTranslucent" Content="不透明" Margin="10,26,8,0" VerticalAlignment="Top"/>
+                </Grid>
+            </GroupBox>
+            <GroupBox x:Name="GbFurVerticalProperty" Header="家具垂直属性" Margin="69,102,262,117">
+                <Grid Margin="0,0,13,-1" Height="120" VerticalAlignment="Bottom">
+                    <RadioButton x:Name="RbInFloor" Content="嵌入地板" Height="16" Margin="16,0,0,97" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="66"/>
+                    <RadioButton x:Name="RbFloorMove" Content="可自由移动" HorizontalAlignment="Left" Height="22" Margin="16,76,0,0" VerticalAlignment="Top" Width="81" Unchecked="RbFloorMove_Unchecked" Checked="RbFloorMove_Checked"/>
+                    <RadioButton x:Name="RbOnFloor" Content="在地板上" Height="21" Margin="16,0,0,71" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="70"/>
+                    <RadioButton x:Name="RbOnCelling" Content="贴在天花板上" HorizontalAlignment="Left" Height="19" Margin="16,0,0,47" VerticalAlignment="Bottom" Width="101"/>
+                    <RadioButton x:Name="RbInCelling" Content="嵌入天花板" HorizontalAlignment="Left" Height="25" Margin="16,95,0,0" VerticalAlignment="Top" Width="92"/>
+                </Grid>
+            </GroupBox>
+            <GroupBox x:Name="GbFurWallProperty" Header="家具靠墙属性" Margin="69,10,0,0" Height="77" VerticalAlignment="Top" HorizontalAlignment="Left" Width="149">
+                <Grid Margin="0,0,17,-2.837" RenderTransformOrigin="0.575,0.631" Height="92.94" VerticalAlignment="Top">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="57*"/>
+                        <ColumnDefinition Width="45*"/>
+                        <ColumnDefinition Width="113*"/>
+                    </Grid.ColumnDefinitions>
+                    <RadioButton x:Name="RbInWall" Content="嵌入墙体" Margin="7.469,10,0,64.126" Grid.ColumnSpan="3" HorizontalAlignment="Left" Width="103.031" />
+                    <RadioButton x:Name="RbOnWall" Content="可以贴墙" Margin="7.469,0,-28.802,33.293" VerticalAlignment="Bottom" Height="25.833" HorizontalAlignment="Left" Width="78.5" Grid.ColumnSpan="2"
+                                 Grid.Column="0" />
+                </Grid>
+            </GroupBox>
+
+        </Grid>
+        <Button x:Name="BtnImport" Content="保存" Height="35" VerticalAlignment="Bottom" Margin="208,0" Grid.ColumnSpan="2" Click="BtnImport_Click"/>
+        <!--<Button x:Name="BtnSearch" Content="浏览" Height="31" VerticalAlignment="Bottom" Margin="236,0,30,572"  RenderTransformOrigin="0.418,0.484" Click="BtnSearch_Click" Grid.Column="1"/>-->
+
+    </Grid>
+</Window>

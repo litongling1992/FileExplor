@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<ArrayOfSavedFolderTabsItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <SavedFolderTabsItem>
+    <FriendlyName>Enter here..</FriendlyName>
+    <TabFullPathName>
+      <string>D:\新建文件夹\新建</string>
+    </TabFullPathName>
+  </SavedFolderTabsItem>
+</ArrayOfSavedFolderTabsItem>

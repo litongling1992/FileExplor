@@ -1,0 +1,98 @@
+﻿<Window
+  x:Name="NameWindow"
+  x:Class="WpfApplication1.MainWindow"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase"
+  xmlns:local="clr-namespace:WpfApplication1"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:sys="clr-namespace:System;assembly=mscorlib"
+  xmlns:sysIO="clr-namespace:System.IO;assembly=mscorlib"
+  xmlns:utils="clr-namespace:Utils"
+  xmlns:vm="clr-namespace:WpfApplication1.ViewModel"
+  xmlns:vw="clr-namespace:WpfApplication1.View"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" d:DesignHeight="600" d:DesignWidth="600"
+  mc:Ignorable="d" 
+  Icon="/WpfApplication1;component/MyImages/bullet_blue.png" WindowStartupLocation="CenterScreen">
+    
+  <!-- 
+    To keep Xaml file smaller some definitions elsewhere.
+    - Note that MainResources is refferred in App.Xaml
+    - Most Xaml is now first develloped in MainWindow and then moved to UserControls in View (Keeping specific bindings)
+  -->
+    
+  <!-- Datacontext databinding to; Initiated from MainViewWindow; generates an instance -->
+  <!-- Current datacontext available like "{Binding DataContext.FolderUpCommand,ElementName=NameWindow }"?? -->
+  <Window.DataContext>
+      <vm:MainVm x:Name="MyMainVm"/>
+  </Window.DataContext>
+  
+  <Window.InputBindings>
+      <!-- Some focus problems when moved to vw:FolderPlaneView -->
+      <!-- Cntrl+c seems a problem, works with other key -->
+    
+      <!-- Some commands made available by key commands-->
+      <KeyBinding Gesture="CTRL+S" Command="{Binding SnapShotSelectedCommand}" />
+      <KeyBinding Gesture="CTRL+V" Command="{Binding CopySnapShotCommand }" />
+        
+      <!-- Instead of normal copy of single folder snapshot we copy FolderName+date for temp backup-->
+      <KeyBinding Gesture="CTRL+d" Command="{Binding CopySnapShotAddDateCommand}" />
+      <KeyBinding Key="F5" Command="{Binding RefreshFolderPlanesCommand}" />
+  </Window.InputBindings>
+  
+  
+  <!-- Grid mainwindow File Explorer-->
+  <!-- For dimming popup Opacity 1 -> 0.2 -->
+  <Grid IsSharedSizeScope="True" HorizontalAlignment="Right" Opacity="{Binding ShaderOpacity}"    >
+        
+      <!-- MainView: 2 rows, 3 columns.
+          (0,*) for SelectedPath and SavedFolderTabs (Aligment=right)
+          (1,0) for TabbedNavTrees, split in 2*1 grid
+          (1,1) for gridsplitter
+          (1,2) for Folderplanes, split in 2*1 grid
+      -->
+      <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="*"/>
+      </Grid.RowDefinitions>
+      <!--Most with set auto, these set by hand-->
+      <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="300"/>
+          <ColumnDefinition Width="Auto"/>
+          <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+        
+      <GridSplitter
+          Grid.Column="1" Grid.Row="1"
+          Width="1"
+          HorizontalAlignment="Center"
+          Background="Silver"/>
+        
+      <!-- Selected Path -->
+      <TextBlock
+            Grid.Row="0" Grid.ColumnSpan="3"
+            Margin="10,5,00,10"
+            Text="{Binding SelectedPath}"
+            Foreground="Gray" FontSize="10" />
+
+      <!--<vw:SavedFolderTabsView Grid.Row="0" Grid.ColumnSpan="3"  HorizontalAlignment="Right" />-->
+
+      <vw:TabbedNavTreesView Grid.Column="0" Grid.Row="1" DataContext="{Binding TabbedNavTrees}" />
+
+      <!-- TabbedFolderPlanes -->
+      <Grid Grid.Row="1" Grid.Column="2">
+          <Grid.RowDefinitions>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="*"/>
+              <RowDefinition Height="Auto"/>
+          </Grid.RowDefinitions>
+
+          <vw:TabsFolderPlanesView Grid.Row="0"/>
+            
+          <vw:FolderPlaneView Grid.Row="1"/>
+
+          <vw:FileManagementButtonsView Grid.Row="2"></vw:FileManagementButtonsView>               
+
+      </Grid>
+  </Grid>
+</Window>

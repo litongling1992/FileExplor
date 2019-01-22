@@ -1,0 +1,181 @@
+﻿<UserControl
+  x:Class="WpfApplication1.View.FileManagementButtonsView"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  mc:Ignorable="d" Height="52.442" Width="556.809">
+
+    <StackPanel Orientation="Horizontal">
+        <StackPanel.Resources>
+            <BooleanToVisibilityConverter x:Key="Bool2Vis"/>
+        </StackPanel.Resources>
+        <CheckBox
+      x:Name="CheckFM"
+      Content="File Management"
+      VerticalAlignment="Center"
+      ToolTip="At own Risk, not fully tested and functional"
+      IsChecked="True"/>
+
+        <!-- File Management buttons only visible on CheckFM -->
+        <ItemsControl Visibility="{Binding IsChecked, ElementName=CheckFM, Converter={StaticResource Bool2Vis}}">
+
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+
+            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"/>
+
+            <!-- Note that we have some key commands defined in MainViewWindow.Xaml -->
+            <!--<Button
+        x:Name="TakePhoto"
+        Style="{StaticResource RoundButton}"
+        ToolTip="Always step 1. Take SNAPSHOT of selected items for Copy or Move "
+        ToolTipService.ShowOnDisabled="True"
+        Content=""
+        FontFamily="WebDings"
+        Background="DodgerBlue"
+        Command="{Binding SnapShotSelectedCommand }"/>
+
+            <Label Content="+" />
+            <Button
+        x:Name="Copy"
+        Style="{StaticResource RoundButton}"
+        ToolTip="COPY SNAPSHOT to current folder (CTRL+V)"
+        ToolTipService.ShowOnDisabled="True"
+        Content="↑C"
+        FontFamily="Segoe Script"
+        FontWeight="Bold"
+        Background="GreenYellow"
+        Command="{Binding CopySnapShotCommand }" />
+
+            <Button
+        x:Name="Move"
+        Style="{StaticResource RoundButton}"
+        ToolTip="MOVE SNAPSHOT to current folder"
+        ToolTipService.ShowOnDisabled="True"
+        Content="↑M"
+        FontFamily="Segoe Script"
+        FontWeight="Bold"
+        Background="Gold"
+        Command="{Binding MoveSnapShotCommand }"/>
+
+            <Button
+        x:Name="CopySingelItemWithDate"
+        Style="{StaticResource RoundButton}"
+        ToolTip="COPY SNAPSHOT (=Single Folder) to current folder + Add Date to FolderName (CTRL+D)"
+        ToolTipService.ShowOnDisabled="True"
+        Content="↑D"
+        FontFamily="Segoe Script"
+        FontWeight="Bold"
+        Background="GreenYellow"
+        Command="{Binding CopySnapShotAddDateCommand }"/>-->
+
+            <!--<Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"/>-->
+
+            <Button
+        x:Name="NewFolder"
+        Style="{StaticResource RoundButton}"
+        ToolTip="新增目录"
+        ToolTipService.ShowOnDisabled="True"
+        Content="新增目录"
+        Background="Gold"
+       
+        Command="{Binding NewFolderCommand }" Margin="1,8,1,10" Height="Auto" Width="55"/>
+            <!--FontFamily="Wingdings"-->
+            <!--Click="NewFolder_Click" />-->
+            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"/>
+
+            <!--<Button
+                x:Name="Rename"
+                Style="{StaticResource RoundButton}"
+                ToolTip="重命名"
+                ToolTipService.ShowOnDisabled="True"
+                Content="重命名"
+                Background="LightBlue"
+                Command="{Binding ToggleOpenPopup3Command}" Height="Auto" Margin="1,10" Width="55"/>
+            --><!--FontFamily="Segoe Script"--><!--
+            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"/>-->
+
+            <Button
+                x:Name="DeleteSelected" Margin="10,10,10,8"
+                Style="{StaticResource RoundButton}"
+                ToolTip="删除当前选中项"
+                ToolTipService.ShowOnDisabled="True"
+                Content="删除"
+               
+                Background="Red"
+                Command="{Binding DeleteSelectedCommand}" Height="Auto" Width="55"/>
+            <!--FontFamily="WingDings"-->
+            <Popup
+            IsOpen="{Binding Popup3IsOpen}"
+            PopupAnimation="Slide"
+            StaysOpen="False"
+            HorizontalAlignment="Right">
+                <Border BorderBrush="Black" BorderThickness="2">
+                    <StackPanel Background="White">
+                        <!--To do?: handle default text in TextBox better -->
+                        <GroupBox Header="Rename Current Selected filename:" Margin="10" Padding="10">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBox
+                      Name="SaveItem"
+                      Text="{Binding SelectedFolderItem}"
+                      HorizontalContentAlignment="Stretch"
+                      Width="200"/>
+                                <Button Content="Rename" Command="{Binding RenameCommand}" CommandParameter="{Binding Path=Text, ElementName=SaveItem}"/>
+                            </StackPanel>
+                        </GroupBox>
+                        <Button Content="Cancel" Command="{Binding ToggleOpenPopup3Command}" Margin="5"/>
+                    </StackPanel>
+                </Border>
+            </Popup>
+            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"/>
+            <Button
+                x:Name="DeleteSelected1" Margin="10,9,10,6"
+                Style="{StaticResource RoundButton}"
+                ToolTip="编辑模型"
+                ToolTipService.ShowOnDisabled="True"
+                Content="编辑模型"
+               
+                Background="SandyBrown"
+                Command="{Binding EditModel}" Height="Auto" Width="55"/>
+            <!--FontFamily="WingDings"-->
+            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+        </ItemsControl>
+
+        <Button
+          x:Name="Refresh"
+          Style="{StaticResource RoundButton}"
+          ToolTip="刷新(F5)"
+          ToolTipService.ShowOnDisabled="True"
+          Content="刷新"
+          Background="LightBlue"
+          Command="{Binding RefreshFolderPlanesCommand }" Height="Auto" Margin="1,10,1,8" Width="55"/>
+        <!--FontFamily="Webdings"-->
+
+        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"/>
+        <!--<Button
+          x:Name="Refresh1"
+          Style="{StaticResource RoundButton}"
+          ToolTip="新建文件夹"
+          ToolTipService.ShowOnDisabled="True"
+          Content="1"
+          FontFamily="Webdings"
+          FontWeight="Bold"
+          Background="GreenYellow"
+          Command="{Binding CreateNewEmptyFolder}" Margin="1,15.721"/>-->
+        <!--<Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"/>-->
+
+        <Button x:Name="Btn" Content="导入模型" Command="{Binding ImPortModelCommand}" Width="55" Margin="0,11,0,8"
+           Style="{StaticResource RoundButton}" Height="Auto" 
+           Background="GreenYellow"/>
+        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"/>
+        <Button x:Name="BtnPi" Content="批量生成xml" Command="{Binding NumbersImportCommand}" Width="74" Margin="0,11,0,8"
+           Style="{StaticResource RoundButton}" Height="Auto" 
+           Background="PaleGreen"/>
+
+    </StackPanel>
+
+</UserControl>

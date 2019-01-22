@@ -1,0 +1,208 @@
+﻿<UserControl
+  x:Class="WpfApplication1.View.TabsFolderPlanesView"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  mc:Ignorable="d"
+  xmlns:mdl="clr-namespace:WpfApplication1.Model"
+  xmlns:vm="clr-namespace:WpfApplication1.ViewModel"
+  xmlns:vw="clr-namespace:WpfApplication1.View"
+  d:DesignHeight="300"
+  d:DesignWidth="300">
+  <UserControl.Resources>
+    <!-- 
+        Datatemplate to view header FolderPlanes, type mdl:FolderPlane  
+    -->
+    <DataTemplate x:Key="FolderPlaneHeader" DataType="{x:Type mdl:FolderPlane}">
+        <TextBlock Margin="10,4,8,4" FontSize="10" Foreground="darkblue" 
+                   Text="{Binding FriendlyName}" ToolTip="{Binding FullPathName}"/>       
+    </DataTemplate>
+      
+    <!-- 
+      * ButtonOnlyScrollViewer scrollviewer template buttons only: < > V
+        Set grid so that Buttons are both on left or left/right
+
+      * A Menu for navigating all items in the scrollview
+        Idea From http://www.blogs.intuidev.com/post/2010/02/10/TabControlStyling_PartThree.aspx, and also used in Visual Express 2010        
+        Copied from http://stackoverflow.com/questions/375291/silverlight-scrollviewer-with-only-buttons answered by Louis
+
+        We take tempory a not so nice solution/hack/shortcut:
+        1) Bind to our specific VM 
+        2) Use a Button seen in the other columns, a menu as content (hck/fiddle with maxwidth) with a comboBox inside 
+        
+        Ugly when mouse over button or menu. 
+        To do??: 
+        Refinement not so nice solution without using to much XAML code
+        Refinement: slider very small height between the buttons??
+    -->
+    <ControlTemplate x:Key="ButtonOnlyScrollViewerDataVm" TargetType="{x:Type ScrollViewer}">
+      <Grid IsSharedSizeScope="True">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="Auto" SharedSizeGroup="ScrollButtonW"/>
+        </Grid.ColumnDefinitions>
+        
+        <!-- (repeat)Buttons < and >  for scrolling -->
+        <!-- First used &lt; and &gt; as context, next FontFamily="Wingdings" Content="", get the ? char from copy/paste OpenOffice -->
+        <ScrollContentPresenter
+          Grid.Column="0"
+          Width="{TemplateBinding Width}"
+          Height="{TemplateBinding Height}"
+          Margin="{TemplateBinding Margin}"
+          CanContentScroll="{TemplateBinding CanContentScroll}"
+          Content="{TemplateBinding Content}"/>
+        <StackPanel Grid.Column="1" Margin="3">
+          <Button
+            ToolTip="Scroll Tabs Left"
+            Style="{StaticResource RoundButton}"
+            Background="{StaticResource FolderTabs}"
+            Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
+            Command="ScrollBar.PageLeftCommand"
+            Content=""
+            FontFamily="Marlett"
+            FontSize="14"/>
+          <Button
+            ToolTip="Scroll Tabs Right"
+            Style="{StaticResource RoundButton}"
+            Background="{StaticResource FolderTabs}"
+            Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
+            Command="ScrollBar.PageRightCommand"
+            Content=""
+            FontFamily="Marlett"
+            FontSize="14"/>
+        </StackPanel>
+        
+      </Grid>
+    </ControlTemplate>
+    
+    <!-- 
+      ListBoxButtonOnlyScrolViewer, adapt the Scrollviewer that is already inside/of the Listbox using template above this one
+    -->
+    <ControlTemplate x:Key="ButtonOnlyScrollViewer" TargetType="{x:Type ListBox}">
+      <ScrollViewer x:Name="ScrollViewer" Template="{StaticResource ButtonOnlyScrollViewerDataVm}">
+        <ItemsPresenter/>
+      </ScrollViewer>
+    </ControlTemplate>
+    
+    <Style x:Key="FolderPlaneTabs" TargetType="ListBoxItem">
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="{x:Type ListBoxItem}">
+            <Border Name="ListboxItemBorder" CornerRadius="10,10,0,0" Margin="3,3,3,0">
+              <ContentPresenter/>
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsSelected" Value="True">
+                <Setter TargetName="ListboxItemBorder" Property="Background" Value="{StaticResource FolderTabsSelected}"/>
+              </Trigger>
+              <Trigger Property="IsSelected" Value="False">
+                <Setter TargetName="ListboxItemBorder" Property="Background" Value="{StaticResource FolderTabsNotSelected}"/>
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+      
+      <!--<Setter Property="LayoutTransform">
+        <Setter.Value>
+            <ScaleTransform ScaleX="1.0" ScaleY="1.0" />
+        </Setter.Value>
+      </Setter>
+      <Style.Triggers>
+        <Trigger Property="IsMouseOver" Value="True">
+            <Trigger.EnterActions>
+                <BeginStoryboard>
+                    <Storyboard>
+                        <DoubleAnimation To="1.3" Duration="0:0:0.1" 
+					Storyboard.TargetProperty="(FrameworkElement.LayoutTransform).(ScaleTransform.ScaleX)" />
+                    </Storyboard>
+                </BeginStoryboard>
+            </Trigger.EnterActions>
+            <Trigger.ExitActions>
+                <BeginStoryboard>
+                    <Storyboard>
+                        <DoubleAnimation To="1.0" Duration="0:0:0.1" 
+					Storyboard.TargetProperty="(FrameworkElement.LayoutTransform).(ScaleTransform.ScaleX)" />
+                    </Storyboard>
+                </BeginStoryboard>
+            </Trigger.ExitActions>
+        </Trigger>
+      </Style.Triggers> -->             
+    </Style>
+    
+  </UserControl.Resources>
+  <!-- 
+   Tabs FolderPlaneHeaders: Listbox with Databinding, horizontal Stackpanel, adapted scrollview, Style                      
+   -->
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="Auto"/>
+    </Grid.ColumnDefinitions>
+
+    <StackPanel Grid.Column="0" Margin="3">
+      <Button
+        x:Name="CloseCurrentTab"
+        Style="{StaticResource RoundButton}"
+        ToolTip="关闭当前标签/路径"
+        Content=""
+        FontFamily="WebDings"
+        Background="Tomato"
+        Command="{Binding CloseTabCommand }"/>
+      <Button
+        x:Name="FolderUp"
+        Style="{StaticResource RoundButton}"
+        ToolTip="FolderUp"
+        Content=""
+        FontFamily="WingDings"
+        Background="Gold"
+        Command="{Binding FolderUpCommand }"/>
+    </StackPanel>
+    
+    <!-- drag and drop makes these buttons optional -->
+    <!--<StackPanel Grid.Column="1" Margin="3" Visibility="Collapsed">
+      <Button
+        Style="{StaticResource RoundButton}"
+        ToolTip="Selected blue tab position to Left in order"
+        Content=""
+        FontFamily="WingDings"
+        Background="LightBlue"
+        Command="{Binding TabToLeftCommand }"/>
+    </StackPanel>-->
+    
+    <ListBox
+      Grid.Column="1"
+      x:Name="FolderPlanesHeaders"
+      ItemsSource="{Binding FolderPlanes}"
+      SelectedItem="{Binding SelectedFolderPlane, Mode=TwoWay}"
+      ItemTemplate="{StaticResource FolderPlaneHeader}"
+      IsSynchronizedWithCurrentItem="True"
+      Template="{StaticResource ButtonOnlyScrollViewer}"
+      ItemContainerStyle="{StaticResource FolderPlaneTabs}"
+      SelectionChanged="FolderPlanesHeaders_SelectionChanged"
+      vw:DnDSortOneListBox.Attach1="True">
+      <ItemsControl.ItemsPanel>
+        <ItemsPanelTemplate>
+          <StackPanel Orientation="Horizontal"/>
+        </ItemsPanelTemplate>
+      </ItemsControl.ItemsPanel>
+    </ListBox>
+    
+    <Button Height="20" Width="26" Grid.Column="2"
+      Focusable="False"
+      ToolTip="List tabs and select">
+      <!-- Hack, compact XAML, Menu with ComboBox; Width, MaxWidth and Margin tweaked   -->
+      <Menu MaxWidth="20" Background="{StaticResource FolderTabs}">
+        <ComboBox
+          Margin="-6,-2,-6,-2"
+          DisplayMemberPath="FullPathName"
+          IsSynchronizedWithCurrentItem="True"
+          ItemsSource="{Binding FolderPlanes}"
+          SelectedItem="{Binding Path=SelectedFolderPlane, Mode=TwoWay}"/>
+      </Menu>
+    </Button>   
+      
+  </Grid>
+</UserControl>

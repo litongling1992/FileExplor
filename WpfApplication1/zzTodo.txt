@@ -1,0 +1,89 @@
+﻿
+Some cryptic remarks
+
+* Known Bugs:
+- If very large files are copied UI hangs, make different background process
+
+- Errors that could not be traced yet, not reproducable and frequently seen:
+  - New Folder/move/copy to current application folder, seems empty string. 
+  - One problem with Rename. Check if existing file?
+  - deal with no access to folder?? 
+
+Minor, can be fixed:  
+- Folderplane. If other tab selected, on return selection reset and Datagrid sort options back to default. 
+  Can we store that per tab??
+- Folderplane on creation not in focus for example for Cntrl+A.
+- Once SavedTab item selected, click again does not result in action. Button + command trick?
+
+** Improve looks
+  Allow more styling. 
+  Improve Buttons. Program Icon.
+  Tabs NavTree in list without border, popup when in area
+  Tabs FolderPlanes more animation
+  
+* NavTreeTabs
+Functional
+- Favorites. Find documentation, or: construct own Favorites tree in own folder.
+- History. Frequenties/Recent. FolderTabs in an TabNavTree
+- Libraries etc.
+- Show in a NavTreeTab the expanded tree of the current selected Tab 
+Visual
+- Icons for RootItems TabbedNavTree, try tabs only icons, items vertical in left border or:
+- Tabs just List of items, can popup if mouse in area
+- One tree including all rootitems, easy collapse command
+- Switch as in Nortan Commander TabbedNavTrees <-> FolderPlane.
+- NavTreeTabs as popup, just as SavedFolderTabs
+
+* Tabs FolderPlanes. Try:
+- More like filmstrip
+- Text one line, max width dep on hover,selected
+- Vertical tabs limited width, pop up on hover/selected
+- Try thin slider
+- Move them to TabbedNavTrees
+- Nice border on hover, on selected nice color
+
+- Control key + folder up or folderdown: use new folderplane Tab, do not use current 
+- Scroll by mousedown and drag
+- Change name tab
+
+* SavedFolderplaneTabs try small circles/radiobutton with tooltip/on selection. 
+- Cntrl+click button = add, keep current Tabs
+- More easy management. Now Open Tabs (add, close, extra tabs, sort), delete and new save  
+
+* FileManagement
+- Mark snapshot files with special color<> selected
+- Feedback on double items, choices, errors
+- Use background process or Async 
+- Refresch using FileSystemWatcher expanded items
+- Allow Filemanagement buttons also on single selected NavTrees /Items
+- Drag/Drop between selected items -> Tab, Tab -> Tab (==sort Tabs), Tab -> current (== Move Folder)
+- Drag/Drop from/to Snapshot
+- Introduce a Source. Drag/drop from source
+- Visual Feedback Snapshot
+
+* Drag Drop (see also other items)
+- Allow dragging (incl. cntrl key) from items open FolderTab to other Tab
+- Allow drag/drop from/to outside application/windows
+- A Drag and Drop framework needed, uppon dragging several drag options open, must resolve to one on dropping 
+- Drag/Drop to/from Snapshot, SourceFolder
+
+Note: when dragging grid selection gets messed. Probably because on LeftMouseDown selected items gets reset.
+Does it help to do action in MousesPreviewdown (tunnel. bubble), prevent LeftMouseDown
+http://www.codeproject.com/Tips/338594/Drag-drop-multiple-selected-rows-of-datagridview-w
+http://social.msdn.microsoft.com/Forums/pl/wpf/thread/f392b1f3-bb1f-41c9-9355-b18ec92aedcd
+
+
+* History
+ - Global, Per Tab
+ - History buttons for current FolderTab
+ - Adressbar W7 alike (up, back, all tabs). 
+ 
+* FileInfo
+  Button, context menu
+
+* Refactor/Refine
+  Make general (user)contols. 
+  Split lines algorithm: force split long items
+  IOC, Services, Messaging system, weak references
+  Choose a MVVM framework
+  Split MainViewModel

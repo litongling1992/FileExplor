@@ -1,0 +1,22 @@
+﻿<Window x:Class="WpfApplication1.View.EditDir"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApplication1.View"
+        mc:Ignorable="d"
+      
+        Title="编辑目录" Height="300" Width="300" WindowStartupLocation="CenterScreen"          
+        ResizeMode="NoResize"
+        >
+    <Grid>
+        <Label x:Name="Pathlabel" Content="目录名称" HorizontalAlignment="Left" Height="32" Margin="26,42,0,0" VerticalAlignment="Top" Width="66"/>
+        <Label x:Name="LabelCopy" Content="中文名称(*)" HorizontalAlignment="Left" Height="33" Margin="26,74,0,0" VerticalAlignment="Top" Width="71"/>
+        <Label x:Name="LabelCopy1" Content="英文名称(*)" HorizontalAlignment="Left" Height="26" Margin="26,107,0,0" VerticalAlignment="Top" Width="71"/>
+        <TextBox x:Name="TxtChineseName" Height="26" Margin="102,76,38,0" TextWrapping="Wrap"  VerticalAlignment="Top"/>
+        <TextBox x:Name="TxtEnglishName" Height="26" Margin="102,107,38,0" TextWrapping="Wrap"  VerticalAlignment="Top"/>
+        <Button x:Name="BtnEnter" Content="保存" Height="24" Margin="112,0,117,84" VerticalAlignment="Bottom" Click="BtnEnter_Click" />
+        <Label x:Name="LabelCopy1_Copy" Content="带(*)为必填项" HorizontalAlignment="Left" Height="26" Margin="102,194,0,0" VerticalAlignment="Top" Width="84"/>
+
+    </Grid>
+</Window>

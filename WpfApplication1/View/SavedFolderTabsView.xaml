@@ -1,0 +1,132 @@
+﻿<UserControl
+  x:Class="WpfApplication1.View.SavedFolderTabsView"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:mdl="clr-namespace:WpfApplication1.Model"
+  xmlns:dragdrop="clr-namespace:WpfApplication1.View"
+  mc:Ignorable="d"
+  d:DesignHeight="300"
+  d:DesignWidth="300">
+  
+  <UserControl.Resources>        
+    <DataTemplate x:Key="templateSavedFolderTabs" DataType="{x:Type mdl:SavedFolderTabsItem}">
+        <Label Content="{Binding Path=FriendlyName}" FontSize="10" BorderThickness="0,0,1,0" BorderBrush="Silver" />
+    </DataTemplate>
+  </UserControl.Resources>
+  
+  <StackPanel x:Name="SavedFolderTabsUc" Orientation="Horizontal">
+    <ListBox
+      ToolTip="Open several saved tabs by click on one button"
+      ItemsSource="{Binding Path=SavedFolderTabs}"
+      SelectedIndex="{Binding SelectedIndexSavedFolderTabs}"
+      ItemContainerStyle="{StaticResource selectedItemUseBrusch}"
+      ItemTemplate="{StaticResource templateSavedFolderTabs}"
+      dragdrop:DnDSortOneListBox.Attach1="True">
+      <ItemsControl.ItemsPanel>
+        <ItemsPanelTemplate>
+          <StackPanel Orientation="Horizontal"/>
+        </ItemsPanelTemplate>
+      </ItemsControl.ItemsPanel>
+    </ListBox>
+    
+    <Button
+      Focusable="False"
+      Background="AliceBlue"
+      Command="{Binding CloseAllFolderTabsCommand}"
+      ToolTip="Close all current Tabs">
+      <StackPanel>
+        <Grid Height="20">
+          <Ellipse
+            Fill="Tomato"
+            Height="20"
+            Width="20"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"/>
+          <Label
+            Content=""
+            FontSize="20"
+            Padding="0"
+            FontFamily="WebDings"
+            Foreground="Black"
+            FontWeight="Bold"
+            HorizontalContentAlignment="Center"/>
+        </Grid>
+        <Label Content="Close All" FontSize="10" Padding="2"/>
+      </StackPanel>
+    </Button>
+    
+    <Button
+      Focusable="False"
+      Background="AliceBlue"
+      Command="{Binding ToggleOpenPopup1Command}"
+      ToolTip="Delete one named Saved Tabs Button">
+      <StackPanel>
+        <Label
+          Content=""
+          FontSize="20"
+          Height="20"
+          Padding="0"
+          FontFamily="WebDings"
+          Foreground="DarkRed"
+          FontWeight="Bold"
+          HorizontalContentAlignment="Center"/>
+        <Label Content="Saved" FontSize="10" Padding="2"/>
+      </StackPanel>
+    </Button>
+    
+    <Popup
+      IsOpen="{Binding Popup1IsOpen}"
+      PopupAnimation="Slide"
+      StaysOpen="False"
+      HorizontalAlignment="Right">
+      <Border BorderBrush="Black" BorderThickness="2">
+        <StackPanel Background="White">
+          <GroupBox Header="Delete name from list for saved Folder Tabs " Margin="10" Padding="10">
+            <StackPanel>
+              <ListBox Name="Listbox1" ItemsSource="{Binding SavedFolderTabs}" ItemTemplate="{StaticResource templateSavedFolderTabs}"/>
+              <Button Content="Delete Selected" Command="{Binding DeleteSavedTabsCommand}" CommandParameter="{Binding Path=SelectedIndex, ElementName=Listbox1}"/>
+            </StackPanel>
+          </GroupBox>
+          <Button Content="Cancel" Command="{Binding ToggleOpenPopup1Command}" Margin="5"/>
+        </StackPanel>
+      </Border>
+    </Popup>
+    
+    <Button
+      Focusable="False"
+      Background="AliceBlue"
+      Command="{Binding ToggleOpenPopup2Command}"
+      ToolTip="Make a named Button to store all current tabs">
+      <StackPanel>
+        <Image Source="/WpfApplication1;component/MyImages/save.ico" Height="20"/>
+        <Label Content="All Tabs" FontSize="10" Padding="2"/>
+      </StackPanel>
+    </Button>
+    
+    <Popup
+      IsOpen="{Binding Popup2IsOpen}"
+      PopupAnimation="Slide"
+      StaysOpen="False"
+      HorizontalAlignment="Right">
+      <Border BorderBrush="Black" BorderThickness="2">
+        <StackPanel Background="White">
+          <!--To do: handle default text in TextBox better -->
+          <GroupBox Header="Add a new name to save all current FolderTabs:" Margin="10" Padding="10">
+            <StackPanel Orientation="Horizontal">
+              <TextBox
+                Name="SaveItem"
+                Text="Enter here.."
+                HorizontalContentAlignment="Stretch"
+                Width="200"/>
+              <Button Content="Add" Command="{Binding AddSavedTabsCommand}" CommandParameter="{Binding Path=Text, ElementName=SaveItem}"/>
+            </StackPanel>
+          </GroupBox>
+          <Button Content="Cancel" Command="{Binding ToggleOpenPopup2Command}" Margin="5"/>
+        </StackPanel>
+      </Border>
+    </Popup>
+    
+  </StackPanel>
+</UserControl>

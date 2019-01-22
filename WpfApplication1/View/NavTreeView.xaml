@@ -1,0 +1,63 @@
+<UserControl
+  x:Class="WpfApplication1.View.NavTreeView"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  d:DesignHeight="300"
+  d:DesignWidth="300"
+  xmlns:vw="clr-namespace:WpfApplication1.View"
+  xmlns:vm="clr-namespace:WpfApplication1.ViewModel"
+  mc:Ignorable="d"
+  x:Name="CurrentNavTreeViewName">
+  
+  <UserControl.Resources>
+    
+    <HierarchicalDataTemplate x:Key="NavTreeTempl" ItemsSource="{Binding Path=Children}" >
+
+      <!-- Transparant button + command+parameter set SelectedPath EACH time item is clicked -->
+
+      <!-- Note: Normally I use very basic bindings -->
+      <!-- Note: Now commmand in ViewModel, earlier in NavTreeVm, using bindings:
+           "{Binding Path=DataContext.SelectedPathFromTreeCommand, ElementName=CurrentNavTreeViewName}" (+ this User Control given name)
+            or ..., RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"-->
+
+      <Button 
+        ToolTip="{Binding Path=FullPathName, Mode=OneTime}"     
+        Command="{Binding Path=DataContext.SelectedPathFromTreeCommand, 
+                   RelativeSource = {RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+        CommandParameter="{Binding FullPathName}"
+        
+        Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" Height="20"
+        Focusable="False" ClickMode="Press">       
+        
+        <!-- Icon + Friendly Name horizontally stacked -->
+        <StackPanel Orientation="Horizontal" Margin="0" VerticalAlignment="Stretch" >   
+            <Image
+              Source="{Binding Path=MyIcon, Mode=OneTime}"
+              Stretch="Fill"
+              />          
+            <TextBlock Margin="5,0,0,0" Text="{Binding FriendlyName,Mode=OneTime}"/>
+        </StackPanel>
+      </Button>
+      
+    </HierarchicalDataTemplate>
+  </UserControl.Resources>
+  
+  <!-- older: vw:ExtendedTreeView SelectedItemRead="{Binding SelectedTreeItem, Mode=TwoWay}"--> 
+  <TreeView
+    BorderThickness="0"
+           
+    ItemsSource="{Binding Path=RootChildren}"
+    ItemTemplate="{StaticResource NavTreeTempl}" >
+        
+    <TreeView.ItemContainerStyle>
+        <Style TargetType="{x:Type TreeViewItem}">
+            <Setter Property="IsExpanded" Value="{Binding Path=IsExpanded, Mode=TwoWay}"/>
+            <!--<Setter Property="IsSelected" Value="{Binding Path=IsSelected, Mode=TwoWay}"/>-->
+            <!--<Setter Property="dd1:DragDropManager.DropTargetAdvisor" Value="{StaticResource FolderPlaneItemsDropAdvisor}"/>-->
+        </Style>
+    </TreeView.ItemContainerStyle>
+  </TreeView>
+
+</UserControl>

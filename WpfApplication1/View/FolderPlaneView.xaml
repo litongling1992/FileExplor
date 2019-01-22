@@ -1,0 +1,72 @@
+﻿<UserControl
+  x:Class="WpfApplication1.View.FolderPlaneView"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:local="clr-namespace:WpfApplication1"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:vm="clr-namespace:WpfApplication1.ViewModel"
+  xmlns:vw="clr-namespace:WpfApplication1.View"
+  xmlns:mvvm="clr-namespace:MVVM"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  d:DesignHeight="300"
+  d:DesignWidth="491"
+  mc:Ignorable="d">
+
+  <!-- Styles for "DataGridRow" and "DataGridColumnHeader" set background color -->
+  <!-- Also set BorderBrush, GridLinesVisibility None and HeadersVisibility="Column" -->
+  <UserControl.Resources>
+      <Style TargetType="{x:Type DataGridColumnHeader}">
+          <Setter Property="Background" Value="{StaticResource FolderTabs}"/>
+          <Setter Property="Foreground" Value="DarkBlue"/>
+      </Style>
+      <Style TargetType="DataGridRow">
+          <Setter Property="Background" Value="WhiteSmoke"/>
+          <Setter Property="TextBlock.TextTrimming" Value="CharacterEllipsis">
+          </Setter>
+          <Style.Triggers>
+              <Trigger Property="IsMouseOver" Value="True">
+                  <Setter Property="Background" Value="{StaticResource FolderTabs}"/>
+              </Trigger>
+          </Style.Triggers>
+      </Style>
+  </UserControl.Resources>
+
+  <!-- Note we use attached DataGridBehaviour for doubleclick row  -->
+  <!--          
+      note1: dd1:DragDropManager.DragSourceAdvisor="{StaticResource FolderPlaneItemsDragAdvisor}" influences sorting headers
+      note2: some problems when dragging selection. Codeproject article(VB) extends class for this common problem
+      note3: used CommandExecuter for handling doubleclick becuase I wanted no external dll's, use Blend Behaviuors otherwise
+  -->
+  <DataGrid
+      Name="dataGrid1"
+      ItemsSource="{Binding  SelectedFolderPlane.FolderPlaneItems}"
+      SelectionMode="Extended"
+      SelectionUnit="FullRow"
+      vw:DataGridDoubleClick.DoubleClickCommand="{Binding FolderPlaneItemDoubleClickCommand}"
+      mvvm:CommandExecuter.OnEvent="SelectionChanged"
+      mvvm:CommandExecuter.Command="{Binding SelectedItemsChangedCommand}"
+      mvvm:CommandExecuter.CommandParameter="{Binding Path=SelectedItems,ElementName=dataGrid1}"
+      AutoGenerateColumns="False"
+      BorderBrush="White"
+      GridLinesVisibility="None"
+      HeadersVisibility="Column"
+      IsReadOnly="True"
+      HorizontalAlignment="Left"
+      VerticalAlignment="Top"
+      HorizontalContentAlignment="Stretch"
+      VerticalContentAlignment="Stretch">
+      <DataGrid.Columns>
+          <DataGridTemplateColumn Width="SizeToHeader" Header="  Ico   " IsReadOnly="True">
+              <DataGridTemplateColumn.CellTemplate>
+                  <DataTemplate>
+                      <Image Width="16" Height="16" Source="{Binding MyIcon, Mode=OneTime}"/>
+                  </DataTemplate>
+              </DataGridTemplateColumn.CellTemplate>
+          </DataGridTemplateColumn>
+          <DataGridTextColumn Width="*" Binding="{Binding Name, Mode=OneTime}" Header="  Name                                                       "/>
+          <DataGridTextColumn Width="SizeToHeader" Binding="{Binding Ext, Mode=OneTime}" Header="  Extension   "/>
+          <DataGridTextColumn Width="SizeToHeader" Binding="{Binding Date, Mode=OneTime}" Header="  Last Modified              "/>
+          <DataGridTextColumn Width="SizeToHeader" Binding="{Binding Size, Mode=OneTime}" Header="  Size Kb  "/>
+      </DataGrid.Columns>
+  </DataGrid>
+</UserControl>
